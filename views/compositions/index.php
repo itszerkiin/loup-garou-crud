@@ -35,8 +35,19 @@
 
                 <!-- Affichage des boutons "J'aime" et "Je n'aime pas" -->
                 <div class="like-dislike-buttons">
-                    <a href="?action=like&id=<?= $composition['id'] ?>" class="btn">J'aime (<?= $composition['likes'] ?>)</a>
-                    <a href="?action=dislike&id=<?= $composition['id'] ?>" class="btn">Je n'aime pas (<?= $composition['dislikes'] ?>)</a>
+                    <!-- Formulaire "J'aime" -->
+                    <form method="POST" action="../controllers/compositionsController.php">
+                        <input type="hidden" name="composition_id" value="<?= $composition['id'] ?>">
+                        <input type="hidden" name="avis" value="like">
+                        <button type="submit" class="btn">J'aime (<?= $composition['likes'] ?>)</button>
+                    </form>
+
+                    <!-- Formulaire "Je n'aime pas" -->
+                    <form method="POST" action="../controllers/compositionsController.php">
+                        <input type="hidden" name="composition_id" value="<?= $composition['id'] ?>">
+                        <input type="hidden" name="avis" value="dislike">
+                        <button type="submit" class="btn">Je n'aime pas (<?= $composition['dislikes'] ?>)</button>
+                    </form>
                 </div>
 
                 <!-- Affiche les images des cartes associées à la composition -->
@@ -54,3 +65,4 @@
     </div>
 </body>
 </html>
+                        

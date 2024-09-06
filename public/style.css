@@ -1,8 +1,11 @@
+/* style.css */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f0f0f0;
+    background-color: #121212; /* Thème sombre */
+    color: #e0e0e0; /* Couleur du texte clair pour contraste */
 }
 
 header nav {
@@ -11,7 +14,7 @@ header nav {
 
 nav a {
     margin-right: 15px;
-    color: #007BFF;
+    color: #1e90ff; /* Couleur ajustée pour un thème sombre */
     text-decoration: none;
 }
 
@@ -20,28 +23,32 @@ nav a:hover {
 }
 
 h1, h2, h3 {
-    color: #333;
+    color: #ffffff; /* Couleur du texte claire */
 }
 
 .compositions-container {
     display: flex;
-    flex-direction: column;
+    justify-content: center; /* Centre les compositions horizontalement */
+    align-items: center;
+    flex-wrap: wrap; /* Permet de passer à la ligne si nécessaire */
     gap: 20px;
 }
 
 .composition {
-    background-color: #fff;
+    background-color: #1e1e1e; /* Couleur de fond pour le thème sombre */
     padding: 15px;
-    border: 1px solid #ddd;
+    border: 1px solid #333; /* Bordure plus foncée */
     border-radius: 5px;
     margin-bottom: 20px;
+    width: 300px; /* Ajuste la largeur pour une meilleure visibilité */
 }
 
 .cartes {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Affiche les cartes en ligne */
     gap: 10px;
     margin-top: 10px;
+    overflow-x: auto; /* Permet le défilement horizontal */
 }
 
 .carte-image {
@@ -49,6 +56,29 @@ h1, h2, h3 {
     height: 100px;
     object-fit: cover;
     border-radius: 5px;
+    position: relative;
+    transition: transform 0.3s ease; /* Animation pour le survol */
+}
+
+.carte-image:hover {
+    transform: scale(1.1); /* Agrandit légèrement l'image au survol */
+}
+
+.carte-details {
+    display: none; /* Cache les détails par défaut */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fond semi-transparent */
+    color: #ffffff;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.carte:hover .carte-details {
+    display: block; /* Affiche les détails au survol */
 }
 
 .like-dislike-buttons {
@@ -61,7 +91,7 @@ h1, h2, h3 {
     display: inline-block;
     padding: 8px 16px;
     margin: 10px 0;
-    background-color: #007BFF;
+    background-color: #1e90ff;
     color: #fff;
     text-decoration: none;
     border-radius: 4px;
@@ -69,10 +99,11 @@ h1, h2, h3 {
 }
 
 .btn:hover {
-    background-color: #0056b3;
+    background-color: #1c7ed6;
 }
+
 .error {
-    color: red;
+    color: #ff6b6b;
     font-weight: bold;
     margin-bottom: 10px;
 }

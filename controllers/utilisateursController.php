@@ -15,26 +15,35 @@ switch ($action) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $identifiant = $_POST['identifiant']; // Pseudo ou email
             $password = $_POST['password'];
-
+    
             $utilisateur = $utilisateurModel->getUtilisateurByPseudoOrEmail($identifiant);
-
-            if ($utilisateur && password_verify($password, $utilisateur['password'])) {
-                // Initialiser la session après la vérification réussie
-                $_SESSION['user_id'] = $utilisateur['id'];
-                $_SESSION['pseudo'] = $utilisateur['pseudo'];
-
-                // Redirection après connexion réussie
-                header('Location: /loup-garou-crud/public/index.php'); // Redirige vers la page d'accueil
-                exit;
+    
+            if ($utilisateur) {
+                echo "Utilisateur trouvé : " . htmlspecialchars($utilisateur['pseudo']) . "<br>";
+                echo "Mot de passe haché : " . htmlspecialchars($utilisateur['password']) . "<br>";
+    
+                if (password_verify($password, $utilisateur['password'])) {
+                    echo "Mot de passe correct.";
+                    // Initialiser la session après la vérification réussie
+                    $_SESSION['user_id'] = $utilisateur['id'];
+                    $_SESSION['pseudo'] = $utilisateur['pseudo'];
+    
+                    // Redirection après connexion réussie
+                    header('Location: /loup-garou-crud/public/index.php'); // Redirige vers la page d'accueil
+                    exit;
+                } else {
+                    echo "Erreur : Mot de passe incorrect.";
+                }
             } else {
-                // Message d'erreur en cas de mauvaise connexion
-                header('Location: /loup-garou-crud/public/index.php?action=login&error=invalid_credentials');
-                exit;
+                echo "Erreur : Utilisateur non trouvé.";
             }
         } else {
             include '../views/utilisateurs/login.php';
         }
         break;
+    
+    
+        
 
     case 'register':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
