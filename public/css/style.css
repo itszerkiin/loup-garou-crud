@@ -1,0 +1,110 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #121212; /* Thème sombre */
+    color: #e0e0e0; /* Couleur du texte clair pour contraste */
+}
+
+h1, h2, h3 {
+    color: #ffffff; /* Couleur du texte claire */
+}
+
+.compositions-container {
+    display: flex;
+    justify-content: center; /* Centre les compositions horizontalement */
+    align-items: flex-start; /* Aligne les compositions en haut */
+    flex-wrap: wrap; /* Permet de passer à la ligne si nécessaire */
+    gap: 20px;
+}
+
+.composition {
+    background-color: #1e1e1e; /* Couleur de fond pour le thème sombre */
+    padding: 15px;
+    border: 1px solid #333; /* Bordure plus foncée */
+    border-radius: 5px;
+    margin-bottom: 20px;
+    width: 300px; /* Largeur fixe */
+    min-height: 450px; /* Hauteur minimale pour une meilleure uniformité */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Répartit l'espace verticalement */
+}
+
+.cartes {
+    display: flex;
+    flex-wrap: wrap; /* Permet plusieurs lignes de cartes */
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.carte-item {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+}
+
+.carte-image {
+    width: 80px; /* Taille carrée */
+    height: 80px; /* Taille carrée */
+    object-fit: cover;
+    border-radius: 10px;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.carte-quantity {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.8em;
+    color: red;
+    font-weight: bold;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carte-image:hover {
+    transform: scale(1.1); /* Agrandit légèrement l'image au survol */
+}
+
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 10px 0;
+    background-color: #1e90ff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.btn-liked {
+    background-color: #28a745; /* Couleur verte pour le bouton "Aimé" */
+}
+
+.liked-message {
+    color: green;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.uniform-size {
+    width: 300px; /* Fixe une largeur uniforme */
+    min-height: 450px; /* Assure une taille uniforme pour toutes les compositions */
+}
+
+.like-button-container {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.error {
+    color: #ff6b6b;
+    font-weight: bold;
+    margin-bottom: 10px;
+}

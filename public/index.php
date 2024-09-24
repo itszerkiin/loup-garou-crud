@@ -10,6 +10,8 @@ $action = $_GET['action'] ?? '';
 switch ($action) {
     case 'cartes':
     case 'create_carte':
+    case 'edit_carte': 
+    case 'delete_carte':
         require_once '../controllers/cartesController.php';
         break;
     case 'create_composition':

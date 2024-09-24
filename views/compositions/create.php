@@ -5,40 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Créer une Composition</title>
-    <link rel="stylesheet" href="/loup-garou-crud/public/style.css">
-    <script>
-        function updateCardSelection() {
-            const maxCards = document.getElementById('nombre_joueurs').value;
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            let selectedCount = 0;
-
-            checkboxes.forEach((checkbox) => {
-                if (checkbox.checked) {
-                    selectedCount++;
-                }
-            });
-
-            checkboxes.forEach((checkbox) => {
-                if (selectedCount >= maxCards && !checkbox.checked) {
-                    checkbox.disabled = true;
-                } else {
-                    checkbox.disabled = false;
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('nombre_joueurs').addEventListener('input', updateCardSelection);
-            document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
-                checkbox.addEventListener('change', updateCardSelection);
-            });
-        });
-    </script>
+    <link rel="stylesheet" href="/loup-garou-crud/public/css/header.css"> <!-- Lien vers le fichier CSS -->
+    <link rel="stylesheet" href="/loup-garou-crud/public/css/composition.css"> <!-- Lien vers le fichier CSS -->
 </head>
 <body>
-    <header>
+<header>
         <nav>
-            <a href="/loup-garou-crud/public/index.php">Accueil</a> | 
+            <a href="/loup-garou-crud/public/index.php">Compositions</a> | 
             <a href="/loup-garou-crud/public/index.php?action=cartes">Cartes</a> |
             <?php if (isset($_SESSION['user_id'])): ?>
                 <a href="?action=logout">Déconnexion (<?= htmlspecialchars($_SESSION['pseudo']) ?>)</a>
@@ -58,27 +31,76 @@
         <label for="description">Description:</label>
         <textarea name="description" rows="5" cols="40" required></textarea><br>
 
-        <label for="nombre_joueurs">Nombre de Joueurs:</label>
-        <input type="number" id="nombre_joueurs" name="nombre_joueurs" min="1" required><br>
+        <label for="nombre_joueurs">Nombre de Joueurs (Minimum : 5):</label>
+        <input type="number" id="nombre_joueurs" name="nombre_joueurs" min="5" value="5" required><br>
 
-        <label for="cartes">Sélectionner les Cartes (maximum égal au nombre de joueurs):</label><br>
+        <p id="error-message" style="color: red; display: none;">Le nombre de cartes ne peut pas dépasser le nombre de joueurs. Augmentez le nombre de joueurs.</p>
+
+        <label for="cartes">Sélectionner les Cartes (exactement égal au nombre de joueurs):</label><br>
+        
+        <!-- Conteneur pour les catégories de cartes -->
         <div class="cartes-selection">
-            <?php if (isset($cartesDisponibles) && is_array($cartesDisponibles)): ?>
-                <?php foreach ($cartesDisponibles as $carte): ?>
-                    <div class="carte">
-                        <img src="<?= htmlspecialchars($carte['photo']) ?>" alt="<?= htmlspecialchars($carte['nom']) ?>" width="100">
-                        <input type="checkbox" name="cartes[]" value="<?= $carte['id'] ?>" onchange="updateCardSelection()">
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>Aucune carte disponible pour le moment. <a href="/loup-garou-crud/public/index.php?action=create_carte">Ajouter une carte</a></p>
-            <?php endif; ?>
+            <div>
+                <div class="category-header">Villageois</div>
+                <div class="cards-category villageois">
+                    <?php foreach ($cartesDisponibles as $carte): ?>
+                        <?php if ($carte['categorie'] == 'villageois'): ?>
+                            <div class="carte">
+                                <img src="<?= htmlspecialchars($carte['photo']) ?>" alt="<?= htmlspecialchars($carte['nom']) ?>" class="carte-image">
+                                <div class="card-actions">
+                                    <button type="button" class="btn-decrease">-</button>
+                                    <button type="button" class="btn-increase">+</button>
+                                </div>
+                                <div class="card-count" data-count="0">0</div>
+                                <input type="hidden" name="cartes[<?= $carte['id'] ?>]" value="0">
+                            </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <div>
+                <div class="category-header">Neutre</div>
+                <div class="cards-category neutre">
+                    <?php foreach ($cartesDisponibles as $carte): ?>
+                        <?php if ($carte['categorie'] == 'neutre'): ?>
+                            <div class="carte">
+                                <img src="<?= htmlspecialchars($carte['photo']) ?>" alt="<?= htmlspecialchars($carte['nom']) ?>" class="carte-image">
+                                <div class="card-actions">
+                                    <button type="button" class="btn-decrease">-</button>
+                                    <button type="button" class="btn-increase">+</button>
+                                </div>
+                                <div class="card-count" data-count="0">0</div>
+                                <input type="hidden" name="cartes[<?= $carte['id'] ?>]" value="0">
+                            </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <div>
+                <div class="category-header">Loup</div>
+                <div class="cards-category loup">
+                    <?php foreach ($cartesDisponibles as $carte): ?>
+                        <?php if ($carte['categorie'] == 'loup'): ?>
+                            <div class="carte">
+                                <img src="<?= htmlspecialchars($carte['photo']) ?>" alt="<?= htmlspecialchars($carte['nom']) ?>" class="carte-image">
+                                <div class="card-actions">
+                                    <button type="button" class="btn-decrease">-</button>
+                                    <button type="button" class="btn-increase">+</button>
+                                </div>
+                                <div class="card-count" data-count="0">0</div>
+                                <input type="hidden" name="cartes[<?= $carte['id'] ?>]" value="0">
+                            </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
         </div>
 
-        <!-- Champ caché pour l'ID de l'utilisateur -->
-        <input type="hidden" name="utilisateur_id" value="1"> <!-- Remplacez 1 par l'ID de l'utilisateur connecté -->
-
-        <button type="submit">Créer</button>
+        <button type="submit" id="submit-button" disabled>Créer</button> <!-- Bouton désactivé tant que la sélection n'est pas correcte -->
     </form>
+
+    <script src="/loup-garou-crud/public/js/composition.js"></script> <!-- Lien vers le fichier JS -->
 </body>
 </html>

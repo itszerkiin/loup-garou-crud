@@ -55,9 +55,63 @@ switch ($action) {
         }
         break;
 
+        case 'edit_carte':  // Cas pour modifier une carte
+            if (isset($_GET['id'])) {
+                $carteId = $_GET['id'];
+    
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    $nom = $_POST['nom'];
+                    $description = $_POST['description'];
+                    $categorie = $_POST['categorie'];
+                    $photoUrl = $_POST['current_photo']; // Photo actuelle par défaut
+    
+                    // Si une nouvelle photo est uploadée, la traiter
+                    if (isset($_FILES['photo']) && $_FILES['photo']['error'] == UPLOAD_ERR_OK) {
+                        $photoTmpPath = $_FILES['photo']['tmp_name'];
+                        $photoName = basename($_FILES['photo']['name']);
+                        $photoDestinationPath = __DIR__ . '/../uploads/' . $photoName;
+    
+                        // Déplacer la nouvelle photo dans le répertoire 'uploads'
+                        if (move_uploaded_file($photoTmpPath, $photoDestinationPath)) {
+                            $photoUrl = '/loup-garou-crud/uploads/' . $photoName;
+                        }
+                    }
+    
+                    // Mise à jour de la carte
+                    $result = $carteModel->updateCarte($carteId, $nom, $description, $photoUrl, $categorie);
+    
+                    if ($result) {
+                        header('Location: /loup-garou-crud/public/index.php?action=cartes');
+                        exit;
+                    } else {
+                        echo "Erreur : Échec de la mise à jour de la carte.";
+                    }
+                } else {
+                    // Récupérer les informations de la carte à modifier
+                    $carte = $carteModel->getCarteById($carteId);
+                    include '../views/cartes/edit.php';
+                }
+            }
+            break;
+
+
+        case 'delete_carte':  // Cas pour supprimer une carte
+            if (isset($_GET['id'])) {
+                $carteId = $_GET['id'];
+                $result = $carteModel->deleteCarte($carteId);
+    
+                if ($result) {
+                    header('Location: /loup-garou-crud/public/index.php?action=cartes');
+                    exit;
+                } else {
+                    echo "Erreur : Échec de la suppression de la carte.";
+                }
+            }
+            break;
+
     default:
+        // Afficher toutes les cartes
         $cartes = $carteModel->getAllCartes();
         include '../views/cartes/index.php';
         break;
 }
-?>

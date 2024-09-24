@@ -1,0 +1,21 @@
+/* Style pour le menu */
+header {
+    background-color: #1e1e1e;
+    padding: 15px;
+}
+
+header nav {
+    display: flex;
+    justify-content: space-around;
+}
+
+nav a {
+    color: #1e90ff;
+    text-decoration: none;
+    margin-right: 20px;
+    font-size: 1.1em;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}

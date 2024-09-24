@@ -5,7 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Modifier une Composition</title>
-    <link rel="stylesheet" href="/loup-garou-crud/public/style.css">
+    <link rel="stylesheet" href="/loup-garou-crud/public/css/header.css"> <!-- Lien vers le fichier CSS -->
+    <link rel="stylesheet" href="/loup-garou-crud/public/css/style.css">
 </head>
 <body>
     <h1>Modifier la Composition</h1>
@@ -20,8 +21,15 @@
         <label for="nombre_joueurs">Nombre de Joueurs:</label>
         <input type="number" name="nombre_joueurs" value="<?= htmlspecialchars($composition['nombre_joueurs']) ?>" required><br>
 
-        <label for="cartes">Cartes (JSON):</label>
-        <textarea name="cartes" required><?= htmlspecialchars($composition['cartes']) ?></textarea><br>
+        <label for="cartes">Sélectionner les Cartes:</label><br>
+        <div class="cartes-selection">
+            <?php foreach ($cartesDisponibles as $carte): ?>
+                <div class="carte">
+                    <img src="<?= htmlspecialchars($carte['photo']) ?>" alt="<?= htmlspecialchars($carte['nom']) ?>" width="100">
+                    <input type="checkbox" name="cartes[]" value="<?= $carte['id'] ?>" <?= in_array($carte['id'], json_decode($composition['cartes'], true)) ? 'checked' : '' ?>>
+                </div>
+            <?php endforeach; ?>
+        </div>
 
         <button type="submit">Mettre à jour</button>
     </form>

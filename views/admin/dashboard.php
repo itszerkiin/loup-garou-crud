@@ -34,7 +34,13 @@
                     <td><?= htmlspecialchars($utilisateur['email']) ?></td>
                     <td><?= htmlspecialchars($utilisateur['role']) ?></td>
                     <td>
+                        <!-- Supprimer un utilisateur -->
                         <a href="?action=delete_user&id=<?= $utilisateur['id'] ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</a>
+
+                        <!-- Changer le rôle d'un utilisateur si besoin -->
+                        <?php if ($utilisateur['role'] !== 'admin'): ?>
+                            <a href="?action=make_admin&id=<?= $utilisateur['id'] ?>" onclick="return confirm('Êtes-vous sûr de vouloir donner les droits admin à cet utilisateur ?');">Donner droits admin</a>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

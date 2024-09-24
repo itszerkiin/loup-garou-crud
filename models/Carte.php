@@ -12,24 +12,32 @@ class Carte
 
     public function getAllCartes()
     {
-        // Récupère toutes les cartes de la base de données
         $stmt = $this->pdo->query('SELECT * FROM cartes');
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getCarteById($id)
     {
-        // Récupère une carte par son ID
         $stmt = $this->pdo->prepare('SELECT * FROM cartes WHERE id = ?');
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
+    
     public function createCarte($nom, $description, $photo, $categorie)
     {
-        // Insère une nouvelle carte dans la base de données
         $stmt = $this->pdo->prepare('INSERT INTO cartes (nom, description, photo, categorie) VALUES (?, ?, ?, ?)');
         return $stmt->execute([$nom, $description, $photo, $categorie]);
     }
+
+    public function updateCarte($id, $nom, $description, $photo, $categorie)
+    {
+        $stmt = $this->pdo->prepare('UPDATE cartes SET nom = ?, description = ?, photo = ?, categorie = ? WHERE id = ?');
+        return $stmt->execute([$nom, $description, $photo, $categorie, $id]);
+    }
+
+    public function deleteCarte($id)
+    {
+        $stmt = $this->pdo->prepare('DELETE FROM cartes WHERE id = ?');
+        return $stmt->execute([$id]);
+    }
 }
-?>
