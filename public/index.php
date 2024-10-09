@@ -14,14 +14,19 @@ switch ($action) {
     case 'delete_carte':
         require_once '../controllers/cartesController.php';
         break;
+    
     case 'create_composition':
+    case 'edit':
+    case 'delete_composition':
         require_once '../controllers/compositionsController.php';
         break;
+        
     case 'login':
     case 'register':
     case 'logout':
         require_once '../controllers/utilisateursController.php';
         break;
+    
     default:
         require_once '../controllers/compositionsController.php';
         break;

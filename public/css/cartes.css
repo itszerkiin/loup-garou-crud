@@ -1,200 +1,140 @@
 /* Thème sombre global */
 body {
-    font-family: Arial, sans-serif; /* Définit la police pour tout le site */
-    background-color: #121212; /* Définit un fond sombre pour la page */
-    color: #e0e0e0; /* Couleur claire du texte pour contraster avec le fond */
-    margin: 0; /* Supprime les marges par défaut du corps */
-    padding: 20px; /* Ajoute un espace intérieur de 20px autour du corps */
+    font-family: Arial, sans-serif;
+    background-color: #2b1d0e; /* Couleur sombre brun/rouge */
+    color: #f0e6d6; /* Couleur du texte clair pour contraste */
+    margin: 0;
+    padding: 20px;
 }
 
-/* Style pour le menu */
-header {
-    background-color: #1e1e1e;
-    padding: 15px;
-}
 
-header nav {
-    display: flex;
-    justify-content: space-around;
-}
-
-nav a {
-    color: #1e90ff;
-    text-decoration: none;
-    margin-right: 20px;
-    font-size: 1.1em;
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
 
 /* Titres */
-h1, h2 , h3 {
-    color: #ffffff; /* Couleur blanche pour les titres */
-    text-align: center; /* Centre le texte des titres */
+h1, h2, h3 {
+    color: #f0e6d6;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
-/* Conteneur principal des cartes (garde le cadre autour des colonnes) */
+/* Conteneur principal des cartes */
 .cards-container {
-    display: flex; /* Utilise flexbox pour aligner les éléments à l'intérieur */
-    justify-content: space-between; /* Ajoute de l'espace égal entre les colonnes */
-    max-width: 1200px; /* Limite la largeur maximale du conteneur à 1200px */
-    margin: 0 auto; /* Centre le conteneur horizontalement */
-    padding: 20px; /* Ajoute un espacement intérieur de 20px */
-    background-color: #2a2a2a; /* Couleur de fond sombre pour encadrer les colonnes */
-    border-radius: 12px; /* Arrondit les coins du conteneur */
-    padding: 30px; /* Ajoute un espacement intérieur supplémentaire */
-    transition: filter 0.4s ease; /* Transition douce pour les changements de filtre (flou) */
-    position: relative; /* Définit une position relative pour pouvoir utiliser des éléments positionnés absolument */
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #2a2a2a; /* Même fond sombre */
+    border-radius: 12px;
 }
 
-/* Appliquer le flou aux éléments sauf la carte active, son nom et sa description */
-.cards-container.blur .card:not(.active), /* Flouter les cartes non actives */
-.cards-container.blur h2,  /* Flouter les titres des colonnes */
-.blur h1 {  /* Flouter le titre principal "Liste des Cartes" */
-    filter: blur(8px); /* Applique un flou de 8px */
-    pointer-events: none; /* Désactive les interactions sur les éléments floutés */
-}
-
-/* Ne PAS appliquer de flou à la carte active, son nom et sa description */
-.card.active,
-.card.active ~ #description-display,
-.card.active ~ #close-button {
-    filter: none; /* Pas de flou sur la carte active, son nom et la description */
-    pointer-events: all; /* Assure que la carte active et la description restent interactives */
-}
-
-
-
-
-/* Colonne pour chaque catégorie */
+/* Style des colonnes de cartes */
 .cards-column {
-    flex: 1; /* Chaque colonne occupe un espace égal dans le conteneur flex */
-    margin: 0 10px; /* Ajoute un espacement horizontal de 10px entre les colonnes */
-    background-color: #1e1e1e; /* Couleur de fond sombre pour chaque colonne */
-    border-radius: 8px; /* Arrondit les coins de chaque colonne */
-    padding: 20px; /* Ajoute un espacement intérieur de 20px */
-    text-align: center; /* Centre le texte et le contenu à l'intérieur des colonnes */
+    flex: 1;
+    margin: 0 10px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
 }
 
 /* Liste de cartes */
 .cards-list {
-    display: flex; /* Utilise flexbox pour aligner les cartes */
-    flex-direction: column; /* Aligne les cartes verticalement */
-    gap: 20px; /* Ajoute un espacement vertical de 20px entre les cartes */
-    align-items: center; /* Centre les cartes horizontalement dans la colonne */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
 }
 
-/* Style de chaque image */
-/* Supprimer les bordures autour des images et rendre les cartes carrées */
+/* Style des cartes */
 .card {
-    position: relative; /* Définit une position relative pour chaque carte */
-    height: 300px; /* Fixe la hauteur à 300px pour rendre la carte carrée */
-    width: 300px; /* Fixe la largeur à 300px pour rendre la carte carrée */
-    margin: 0 auto; /* Centre la carte horizontalement */
-    overflow: hidden; /* Masque le contenu qui dépasse les limites de la carte */
-    background-color: transparent; /* Fond transparent pour la carte */
-    cursor: pointer; /* Change le curseur en forme de main lors du survol */
-    transition: transform 0.4s ease, z-index 0.4s ease; /* Transition pour l'agrandissement et l'ordre des éléments */
-    z-index: 1; /* Définit un z-index de base pour les cartes */
+    position: relative;
+    height: 300px;
+    width: 300px;
+    margin: 0 auto;
+    overflow: hidden;
+    background-color: transparent;
+    cursor: pointer;
+    transition: transform 0.4s ease, z-index 0.4s ease;
+    z-index: 1;
+    border: 2px solid #8b0000; /* Bordure rouge sombre */
+    border-radius: 8px;
 }
 
-/* Style de chaque image pour s'ajuster à la carte carrée avec un cadre noir */
-.card-image {
-    width: 100%;  /* Assure que l'image remplit toute la largeur de la carte */
-    height: 100%; /* Assure que l'image remplit toute la hauteur de la carte */
-    object-fit: cover; /* L'image remplit la carte en conservant ses proportions */
-    border: 3px solid rgb(250, 250, 250); /* Ajoute un cadre noir de 2px autour de l'image */
-    box-sizing: border-box; /* Assure que le cadre est inclus dans la taille totale de l'image */
-    transition: transform 0.3s ease; /* Transition fluide pour les transformations */
-}
-/* Agrandir la carte au survol */
 .card:hover {
-    transform: scale(1.05); /* Agrandir légèrement la carte lors du survol */
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #d4af37; /* Ombre dorée */
 }
 
-/* Style de la carte agrandie */
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Carte active (agrandie) */
 .card.active {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1.8); /* Agrandir significativement la carte au centre */
+    transform: translate(-50%, -50%) scale(1.8);
     z-index: 101;
-    transition: transform 0.3s ease; /* Transition fluide lors de l'agrandissement */
-    width: 400px; /* Taille plus grande pour la carte agrandie */
-    height: 400px; /* Assure que la carte reste carrée après agrandissement */
+    width: 400px;
+    height: 400px;
 }
 
-
-/* Description de la carte agrandie */
+/* Description de la carte */
 #description-display {
-    position: fixed; /* Fixe la description au bas de l'écran */
-    bottom: 20px; /* Place la description à 20px du bas de l'écran */
-    left: 50%; /* Centre horizontalement la description */
-    transform: translateX(-50%); /* Centre la description de manière fluide */
-    background-color: rgba(0, 0, 0, 0.9); /* Fond noir semi-transparent pour la description */
-    color: #ffffff; /* Texte blanc */
-    text-align: center; /* Centre le texte de la description */
-    padding: 20px; /* Ajoute un espacement intérieur de 20px */
-    border-radius: 8px; /* Arrondit les coins de la description */
-    display: none; /* Masqué par défaut, affiché lorsqu'une carte est active */
-    z-index: 102; /* Positionne la description au-dessus des autres éléments */
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    display: none;
+    z-index: 102;
 }
 
-/* Afficher la description sous la carte agrandie */
 .card.active ~ #description-display {
-    display: block; /* Affiche la description lorsque la carte est active */
+    display: block;
 }
 
-/* Style pour le nom et la description */
+/* Nom et description */
 #card-name {
-    font-size: 1.8em; /* Définit la taille du texte du nom de la carte */
-    margin-bottom: 10px; /* Ajoute un espacement en bas du nom */
+    font-size: 1.8em;
+    margin-bottom: 10px;
 }
 
 #card-description {
-    font-size: 1.2em; /* Taille du texte de la description */
+    font-size: 1.2em;
 }
 
 /* Bouton de fermeture */
 #close-button {
-    position: fixed; /* Fixe le bouton de fermeture dans un coin de l'écran */
-    top: 20px; /* Place le bouton à 20px du haut de l'écran */
-    right: 20px; /* Place le bouton à 20px du côté droit de l'écran */
-    font-size: 2em; /* Agrandit la taille du texte de la croix de fermeture */
-    color: white; /* Couleur du texte blanc pour la croix */
-    background-color: #050000; /* Fond noir très foncé pour le bouton de fermeture */
-    border-radius: 50%; /* Bouton en forme de cercle */
-    padding: 10px; /* Espace intérieur autour de la croix */
-    cursor: pointer; /* Change le curseur en forme de main lors du survol */
-    z-index: 103; /* Positionne le bouton au-dessus de tous les autres éléments */
-    display: none; /* Masqué par défaut, affiché lorsque la carte est active */
-    transition: background-color 0.3s ease; /* Transition fluide du changement de couleur */
-}
-
-/* Afficher le bouton de fermeture lorsque la carte est active */
-.card.active ~ #close-button {
-    display: block; /* Affiche le bouton de fermeture lorsque la carte est active */
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 2em;
+    color: white;
+    background-color: #050000;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 103;
+    display: none;
+    transition: background-color 0.3s ease;
 }
 
 #close-button:hover {
-    background-color: #ff2b2b; /* Change la couleur du bouton en rouge vif lors du survol */
+    background-color: #ff2b2b;
 }
 
-
-/* ADMIN ---------------------------------------------------------------- */
-
-/* Bouton global pour ajouter une carte */
-.admin-actions {
-    text-align: right;
-    margin-bottom: 20px;
-}
-
+/* Bouton admin */
 .admin-actions .btn {
     padding: 10px 15px;
     background-color: #1e90ff;
@@ -205,33 +145,32 @@ h1, h2 , h3 {
 }
 
 .admin-actions .btn:hover {
-    background-color: #1c7ed6;
+    background-color: #d4af37; /* Doré au survol */
 }
 
-/* Actions admin (modifier/supprimer) visibles au survol */
+/* Actions admin visibles au survol */
 .admin-card-actions {
     position: absolute;
     top: 10px;
     left: 10px;
-    display: none; /* Caché par défaut */
+    display: none;
 }
 
 .card:hover .admin-card-actions {
-    display: block; /* Affiche les actions quand la carte est survolée */
+    display: block;
 }
 
 .admin-card-actions .btn {
     margin-right: 5px;
     padding: 5px 10px;
     font-size: 0.9em;
-    background-color: #4caf50; /* Couleur pour modifier */
+    background-color: #4caf50; /* Vert pour modifier */
     color: white;
     border-radius: 4px;
-    text-decoration: none;
 }
 
 .admin-card-actions .btn-delete {
-    background-color: #ff4c4c; /* Couleur pour supprimer */
+    background-color: #ff4c4c; /* Rouge pour supprimer */
 }
 
 .admin-card-actions .btn:hover {

@@ -1,6 +1,6 @@
 /* Style pour le menu */
 header {
-    background-color: #1e1e1e;
+    background-color: #8b0000; /* Rouge sombre */
     padding: 15px;
 }
 
@@ -10,12 +10,13 @@ header nav {
 }
 
 nav a {
-    color: #1e90ff;
+    color: #f0e6d6; /* Texte clair */
     text-decoration: none;
     margin-right: 20px;
     font-size: 1.1em;
+    font-weight: bold;
 }
 
 nav a:hover {
-    text-decoration: underline;
+    color: #d4af37; /* Texte doré au survol */
 }

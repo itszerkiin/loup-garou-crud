@@ -20,6 +20,7 @@ $isUserConnected = isset($_SESSION['user_id']);
 $isAdmin = $isUserConnected && $_SESSION['role'] === 'admin';
 
 switch ($action) {
+    // Créer une nouvelle composition
     case 'create':
         if (!$isUserConnected) {
             header('Location: /loup-garou-crud/public/index.php?action=login&error=connect_required');
@@ -46,81 +47,104 @@ switch ($action) {
         }
         break;
 
-    case 'delete':
-        if (!$isAdmin) {
-            header('Location: /loup-garou-crud/public/index.php?action=login&error=access_denied');
-            exit;
-        }
-
-        $id = $_GET['id'] ?? null;
-        if ($id) {
-            $compositionModel->deleteComposition($id);
-        }
-        header('Location: /loup-garou-crud/public/index.php');
-        exit;
-
-    case 'edit':
-        if (!$isUserConnected) {
-            header('Location: /loup-garou-crud/public/index.php?action=login&error=connect_required');
-            exit;
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id'];
-            $nom = $_POST['nom'];
-            $description = $_POST['description'];
-            $nombre_joueurs = $_POST['nombre_joueurs'];
-            $cartes = $_POST['cartes'];
-
-            $compositionModel->updateComposition($id, $nom, $description, $nombre_joueurs, $cartes);
-            header('Location: /loup-garou-crud/public/index.php');
-        } else {
+        case 'delete_composition':
             $id = $_GET['id'] ?? null;
-            $composition = $compositionModel->getCompositionById($id);
-            $cartesDisponibles = $carteModel->getAllCartes();
-            include '../views/compositions/edit.php';
-        }
-        break;
-
-    case 'like':
-        if (!$isUserConnected) {
-            header('Location: /loup-garou-crud/public/index.php?action=login&error=connect_required');
-            exit;
-        }
-
-        $compositionId = $_POST['composition_id'] ?? null;
-        if ($compositionId) {
-            $userId = $_SESSION['user_id'];
-            if (!$compositionModel->hasUserLiked($compositionId, $userId)) {
-                $compositionModel->likeComposition($compositionId, $userId);
+        
+            // Vérifie si l'utilisateur est connecté et est l'auteur ou un administrateur
+            if ($id && isset($_SESSION['user_id']) && ($compositionModel->isAuthor($_SESSION['user_id'], $id) || $isAdmin)) {
+                $compositionModel->deleteComposition($id);
                 header('Location: /loup-garou-crud/public/index.php');
                 exit;
-            } else {
-                echo "Vous avez déjà aimé cette composition.";
-            }
-        }
-        break;
+            } 
+        
+            case 'edit':
+                if (!$isUserConnected) {
+                    header('Location: /loup-garou-crud/public/index.php?action=login&error=connect_required');
+                    exit;
+                }
+            
+                $id = $_GET['id'] ?? null;
+            
+                if ($id && isset($_SESSION['user_id']) && ($compositionModel->isAuthor($_SESSION['user_id'], $id) || $isAdmin)) {
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                        $nom = $_POST['nom'];
+                        $description = $_POST['description'];
+                        $nombre_joueurs = $_POST['nombre_joueurs'];
+                        $cartes = $_POST['cartes'];
+            
+                        // Met à jour la composition dans la base de données
+                        $compositionModel->updateComposition($id, $nom, $description, $nombre_joueurs, $cartes);
+                        header('Location: /loup-garou-crud/public/index.php');
+                        exit;
+                    } else {
+                        // Récupère la composition à éditer
+                        $composition = $compositionModel->getCompositionById($id);
+            
+                        // Vérifie si la composition existe
+                        if (!$composition) {
+                            echo "Erreur : Composition introuvable.";
+                            exit;
+                        }
+            
+                        // Récupère toutes les cartes disponibles
+                        $cartesDisponibles = $carteModel->getAllCartes();
+            
+                        // Inclut la vue avec les données nécessaires
+                        include __DIR__ . '/../views/compositions/edit.php';
+                        exit;
+                    }
+                } else {
+                    echo "Vous n'avez pas la permission de modifier cette composition.";
+                    exit;
+                }
+            
+   
+        
+        
 
-    case 'top_liked':
-        $topLikedCompositions = $compositionModel->getTopLikedCompositions();
-        include '../views/compositions/top_liked.php';
-        break;
+    // Filtrer les compositions
+    case 'filter':
+        $nombre_joueurs = $_GET['nombre_joueurs'] ?? null;
+        $card_ids = $_GET['card_ids'] ?? [];
 
-    case 'filter_by_card':
-        $cardId = $_GET['card_id'] ?? '';
-        if ($cardId) {
-            $filteredCompositions = $compositionModel->filterCompositionsByCard($cardId);
-            include '../views/compositions/filter.php';
+        if ($nombre_joueurs && !empty($card_ids)) {
+            $filteredCompositions = $compositionModel->filterByCardsAndPlayers($card_ids, $nombre_joueurs);
+        } elseif ($nombre_joueurs) {
+            $filteredCompositions = $compositionModel->filterByNumberOfPlayers($nombre_joueurs);
+        } elseif (!empty($card_ids)) {
+            $filteredCompositions = $compositionModel->filterByExactCards($card_ids);
         } else {
-            header('Location: /loup-garou-crud/public/index.php');
+            $filteredCompositions = $compositionModel->getAllCompositionsAlphabetical();
         }
+
+        include '../views/compositions/_compositions_list.php';
         break;
 
+    // Affichage par défaut
     default:
-        $search = $_GET['search'] ?? '';
         $topLikedCompositions = $compositionModel->getTopLikedCompositions();
         $compositionsAlphabetical = $compositionModel->getAllCompositionsAlphabetical();
-        $cartesDisponibles = $carteModel->getAllCartes(); // Assurer la disponibilité des cartes
+        $cartesDisponibles = $carteModel->getAllCartes();
         include '../views/compositions/index.php';
         break;
+        // controllers/compositionsController.php
+
+// Gérer le "like" d'une composition
+case 'like':
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $compositionId = $_POST['composition_id'];
+        $userId = $_SESSION['user_id'] ?? null;
+
+        if ($userId) {
+            // Ajouter un like si l'utilisateur n'a pas encore aimé la composition
+            if (!$compositionModel->hasUserLiked($compositionId, $userId)) {
+                $compositionModel->likeComposition($compositionId, $userId);
+            }
+        }
+        // Rediriger vers la page précédente après avoir traité la requête
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit;
+    }
+    break;
+
 }

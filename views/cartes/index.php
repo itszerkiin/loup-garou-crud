@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Cartes - Loup-Garou</title>
-    <link rel="stylesheet" href="/loup-garou-crud/public/css/header.css"> <!-- Lien vers le fichier CSS -->
-    <link rel="stylesheet"  href="/loup-garou-crud/public/css/cartes.css"> <!-- Lien vers le fichier CSS -->
+    <link rel="stylesheet" href="/loup-garou-crud/public/css/header.css"> <!-- Lien vers le fichier CSS du header -->
+    <link rel="stylesheet" href="/loup-garou-crud/public/css/cartes.css"> <!-- Lien vers le fichier CSS des cartes -->
 </head>
 <body>
 <header>
@@ -107,6 +107,6 @@
 <!-- Bouton pour fermer la vue agrandie -->
 <div id="close-button" style="display: none;">✖</div>
 
-<script src=" /loup-garou-crud/public/js/cartes.js"></script> <!-- Fichier JS pour interactivité -->
+<script src="/loup-garou-crud/public/js/cartes.js"></script> <!-- Fichier JS pour interactivité -->
 </body>
 </html>
