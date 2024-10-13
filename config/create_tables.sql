@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS utilisateurs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     pseudo VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    mot_de_passe VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     role ENUM('admin', 'utilisateur') DEFAULT 'utilisateur'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -27,12 +27,12 @@ CREATE TABLE IF NOT EXISTS compositions (
     description TEXT,
     nombre_joueurs INT NOT NULL,
     utilisateur_id INT,
-    cartes JSON, -- Pour stocker la composition des cartes en format JSON
+    cartes JSON, -- Pour    stocker la composition des cartes en format JSON
     FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Table `likes_dislikes`
-CREATE TABLE IF NOT EXISTS likes_dislikes (
+-- Table `likes`
+CREATE TABLE IF NOT EXISTS likes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     composition_id INT,
     user_id INT,

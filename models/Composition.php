@@ -13,7 +13,7 @@ class Composition
     // Récupérer toutes les compositions avec le nombre de likes
     public function getAllCompositions($search = '') {
         $query = 'SELECT c.*, u.pseudo AS utilisateur, 
-                  (SELECT COUNT(*) FROM likes_dislikes ld WHERE ld.composition_id = c.id AND ld.type = "like") AS likes
+                  (SELECT COUNT(*) FROM likes ld WHERE ld.composition_id = c.id AND ld.type = "like") AS likes
                   FROM compositions c
                   JOIN utilisateurs u ON c.utilisateur_id = u.id';
 
@@ -64,7 +64,7 @@ class Composition
     // Ajouter un like pour une composition
     public function likeComposition($compositionId, $userId) {
         if (!$this->hasUserLiked($compositionId, $userId)) {
-            $stmt = $this->pdo->prepare('INSERT INTO likes_dislikes (composition_id, user_id, type) VALUES (?, ?, "like")');
+            $stmt = $this->pdo->prepare('INSERT INTO likes (composition_id, user_id, type) VALUES (?, ?, "like")');
             return $stmt->execute([$compositionId, $userId]);
         }
         return false;
@@ -73,7 +73,7 @@ class Composition
     // Vérifier si un utilisateur a déjà liké une composition
     public function hasUserLiked($compositionId, $userId)
     {
-        $stmt = $this->pdo->prepare('SELECT id FROM likes_dislikes WHERE composition_id = ? AND user_id = ? AND type = "like"');
+        $stmt = $this->pdo->prepare('SELECT id FROM likes WHERE composition_id = ? AND user_id = ? AND type = "like"');
         $stmt->execute([$compositionId, $userId]);
         return $stmt->fetch() !== false;
     }
@@ -83,7 +83,7 @@ class Composition
     {
         $stmt = $this->pdo->query('
             SELECT c.*, u.pseudo AS utilisateur, 
-                   (SELECT COUNT(*) FROM likes_dislikes ld WHERE ld.composition_id = c.id AND ld.type = "like") AS likes
+                   (SELECT COUNT(*) FROM likes ld WHERE ld.composition_id = c.id AND ld.type = "like") AS likes
             FROM compositions c
             JOIN utilisateurs u ON c.utilisateur_id = u.id
             ORDER BY likes DESC
@@ -96,7 +96,7 @@ class Composition
     public function getAllCompositionsAlphabetical() {
         $stmt = $this->pdo->query('
             SELECT c.*, u.pseudo AS utilisateur, 
-                   (SELECT COUNT(*) FROM likes_dislikes ld WHERE ld.composition_id = c.id AND ld.type = "like") AS likes
+                   (SELECT COUNT(*) FROM likes ld WHERE ld.composition_id = c.id AND ld.type = "like") AS likes
             FROM compositions c
             JOIN utilisateurs u ON c.utilisateur_id = u.id
             ORDER BY c.nom ASC
@@ -109,7 +109,7 @@ class Composition
     {
         $stmt = $this->pdo->prepare('
             SELECT c.*, u.pseudo AS utilisateur, 
-                   (SELECT COUNT(*) FROM likes_dislikes ld WHERE ld.composition_id = c.id AND ld.type = "like") AS likes
+                   (SELECT COUNT(*) FROM likes ld WHERE ld.composition_id = c.id AND ld.type = "like") AS likes
             FROM compositions c
             JOIN utilisateurs u ON c.utilisateur_id = u.id
             WHERE c.nombre_joueurs = ?
@@ -123,7 +123,7 @@ public function filterByExactCards($cardIds)
 {
     $query = '
         SELECT c.*, u.pseudo AS utilisateur, 
-               (SELECT COUNT(*) FROM likes_dislikes ld WHERE ld.composition_id = c.id AND ld.type = "like") AS likes
+               (SELECT COUNT(*) FROM likes ld WHERE ld.composition_id = c.id AND ld.type = "like") AS likes
         FROM compositions c
         JOIN utilisateurs u ON c.utilisateur_id = u.id
         WHERE 1=1
@@ -153,7 +153,7 @@ public function filterByCardsAndPlayers($cardIds, $nombre_joueurs)
 {
     $query = '
         SELECT c.*, u.pseudo AS utilisateur, 
-               (SELECT COUNT(*) FROM likes_dislikes ld WHERE ld.composition_id = c.id AND ld.type = "like") AS likes
+               (SELECT COUNT(*) FROM likes ld WHERE ld.composition_id = c.id AND ld.type = "like") AS likes
         FROM compositions c
         JOIN utilisateurs u ON c.utilisateur_id = u.id
         WHERE c.nombre_joueurs = :nombre_joueurs

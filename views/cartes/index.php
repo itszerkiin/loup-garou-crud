@@ -31,7 +31,7 @@
 
 <!-- Conteneur principal des cartes -->
 <div class="cards-container">
-    <!-- Colonne des cartes villageoises -->
+    <!-- Section des cartes villageoises -->
     <div class="cards-column">
         <h2>Villageois</h2>
         <div class="cards-list">
@@ -39,8 +39,8 @@
                 <?php if (isset($carte['categorie']) && $carte['categorie'] == 'villageois'): ?>
                     <div class="card" data-nom="<?= htmlspecialchars($carte['nom']); ?>" data-description="<?= htmlspecialchars($carte['description']); ?>">
                         <img src="<?= htmlspecialchars($carte['photo']) ?>" alt="<?= htmlspecialchars($carte['nom']) ?>" class="card-image">
-                        
-                        <!-- Boutons modifier et supprimer visibles au survol (pour admin) -->
+                        <div class="card-name"><?= htmlspecialchars($carte['nom']); ?></div>
+                        <!-- Boutons admin visibles pour les administrateurs -->
                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                             <div class="admin-card-actions">
                                 <a href="/loup-garou-crud/public/index.php?action=edit_carte&id=<?= $carte['id']; ?>" class="btn btn-edit">Modifier</a>
@@ -53,7 +53,7 @@
         </div>
     </div>
 
-    <!-- Colonne des cartes neutres -->
+    <!-- Section des cartes neutres -->
     <div class="cards-column">
         <h2>Neutre</h2>
         <div class="cards-list">
@@ -61,8 +61,8 @@
                 <?php if (isset($carte['categorie']) && $carte['categorie'] == 'neutre'): ?>
                     <div class="card" data-nom="<?= htmlspecialchars($carte['nom']); ?>" data-description="<?= htmlspecialchars($carte['description']); ?>">
                         <img src="<?= htmlspecialchars($carte['photo']) ?>" alt="<?= htmlspecialchars($carte['nom']) ?>" class="card-image">
-                        
-                        <!-- Boutons admin -->
+                        <div class="card-name"><?= htmlspecialchars($carte['nom']); ?></div>
+                        <!-- Boutons admin visibles pour les administrateurs -->
                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                             <div class="admin-card-actions">
                                 <a href="/loup-garou-crud/public/index.php?action=edit_carte&id=<?= $carte['id']; ?>" class="btn btn-edit">Modifier</a>
@@ -75,7 +75,7 @@
         </div>
     </div>
 
-    <!-- Colonne des cartes loups-garous -->
+    <!-- Section des cartes loups-garous -->
     <div class="cards-column">
         <h2>Loups-Garous</h2>
         <div class="cards-list">
@@ -83,8 +83,8 @@
                 <?php if (isset($carte['categorie']) && $carte['categorie'] == 'loup'): ?>
                     <div class="card" data-nom="<?= htmlspecialchars($carte['nom']); ?>" data-description="<?= htmlspecialchars($carte['description']); ?>">
                         <img src="<?= htmlspecialchars($carte['photo']) ?>" alt="<?= htmlspecialchars($carte['nom']) ?>" class="card-image">
-                        
-                        <!-- Boutons admin -->
+                        <div class="card-name"><?= htmlspecialchars($carte['nom']); ?></div>
+                        <!-- Boutons admin visibles pour les administrateurs -->
                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                             <div class="admin-card-actions">
                                 <a href="/loup-garou-crud/public/index.php?action=edit_carte&id=<?= $carte['id']; ?>" class="btn btn-edit">Modifier</a>

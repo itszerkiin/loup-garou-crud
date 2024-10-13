@@ -3,44 +3,54 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.getElementById('submit-button');
     const errorMessage = document.getElementById('error-message');
     let totalSelectedCards = 0;
+    const carteNomAffichage = document.getElementById('carte-nom-affichage');
 
-    // Initialisation de totalSelectedCards avec les cartes déjà sélectionnées
+    // Gérer le survol des cartes de filtrage et des compositions
+    function setupHoverEffect() {
+        document.querySelectorAll('.carte-item').forEach(carte => {
+            carte.addEventListener('mouseover', (e) => {
+                const carteNom = e.currentTarget.querySelector('.carte-image').alt;
+                carteNomAffichage.textContent = carteNom;
+                carteNomAffichage.style.display = 'block';
+            });
+
+            carte.addEventListener('mouseout', () => {
+                carteNomAffichage.style.display = 'none';
+            });
+        });
+    }
+    setupHoverEffect();
+
+    // Code existant pour la logique de filtrage et le comptage des cartes
     document.querySelectorAll('.carte').forEach((carte) => {
         const countElem = carte.querySelector('.card-count');
         const inputElem = carte.querySelector('input[type="hidden"]');
         const initialCount = parseInt(inputElem.value) || 0;
 
-        // Mettre à jour totalSelectedCards selon les valeurs actuelles
         totalSelectedCards += initialCount;
         countElem.textContent = initialCount;
 
-        // Affiche le compteur s'il est supérieur à 0
         if (initialCount > 0) {
             countElem.style.display = 'block';
         }
 
-        // Mettre à jour data-count pour synchroniser avec l'input hidden
         carte.dataset.count = initialCount;
     });
 
-    // Fonction pour mettre à jour l'état du bouton de soumission
     const updateSubmitButtonState = () => {
         const maxCards = parseInt(nombreJoueursInput.value);
-        if (totalSelectedCards === maxCards) {
-            submitButton.disabled = false;
-            errorMessage.style.display = 'none';
-        } else {
-            submitButton.disabled = true;
-            if (totalSelectedCards > maxCards) {
-                errorMessage.style.display = 'block';
-            } else {
+        if (submitButton) {
+            if (totalSelectedCards === maxCards) {
+                submitButton.disabled = false;
                 errorMessage.style.display = 'none';
+            } else {
+                submitButton.disabled = true;
+                errorMessage.style.display = (totalSelectedCards > maxCards) ? 'block' : 'none';
             }
         }
     };
     updateSubmitButtonState();
 
-    // Gestion des boutons + pour chaque carte
     document.querySelectorAll('.btn-increase').forEach((btnIncrease) => {
         btnIncrease.addEventListener('click', (e) => {
             const carte = e.target.closest('.carte');
@@ -57,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 totalSelectedCards++;
                 updateSubmitButtonState();
 
-                // Affiche le compteur s'il est supérieur à 0
                 if (count > 0) {
                     countElem.style.display = 'block';
                 }
@@ -65,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Gestion des boutons - pour chaque carte
     document.querySelectorAll('.btn-decrease').forEach((btnDecrease) => {
         btnDecrease.addEventListener('click', (e) => {
             const carte = e.target.closest('.carte');
@@ -81,7 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 totalSelectedCards--;
                 updateSubmitButtonState();
 
-                // Masque le compteur si le nombre est 0
                 if (count === 0) {
                     countElem.style.display = 'none';
                 }
@@ -89,6 +96,50 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Mise à jour de l'état du bouton de soumission lors de la modification du nombre de joueurs
-    nombreJoueursInput.addEventListener('change', updateSubmitButtonState);
+    if (nombreJoueursInput) {
+        nombreJoueursInput.addEventListener('change', filterCompositions);
+    }
+
+    function filterCompositions() {
+        const selectedCards = document.querySelectorAll('.filter-card.selected');
+        const playerCount = parseInt(nombreJoueursInput.value) || null;
+
+        document.querySelectorAll('#compositions-list .composition').forEach(composition => {
+            composition.style.display = '';  // Affiche par défaut toutes les compositions
+        });
+
+        if (selectedCards.length === 0 && !playerCount) {
+            return;
+        }
+
+        document.querySelectorAll('#compositions-list .composition').forEach(composition => {
+            const compositionPlayerCount = parseInt(composition.getAttribute('data-player-count'));
+            const compositionCards = composition.querySelectorAll('.composition-carte');
+
+            const matchesCards = Array.from(compositionCards).some(compositionCard => {
+                return Array.from(selectedCards).some(selectedCard =>
+                    compositionCard.getAttribute('data-id') === selectedCard.getAttribute('data-card-id')
+                );
+            });
+
+            const matchesPlayers = !playerCount || compositionPlayerCount === playerCount;
+
+            if ((selectedCards.length > 0 && !matchesCards) || (playerCount && !matchesPlayers)) {
+                composition.style.display = 'none';
+            }
+        });
+    }
+
+    function setupFilterCards() {
+        const filterCards = document.querySelectorAll('.filter-card');
+
+        filterCards.forEach(card => {
+            card.addEventListener('click', function() {
+                card.classList.toggle('selected');
+                filterCompositions();
+            });
+        });
+    }
+
+    setupFilterCards();
 });

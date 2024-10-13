@@ -31,4 +31,4 @@ switch ($action) {
         require_once '../controllers/compositionsController.php';
         break;
 }
-?>
+
