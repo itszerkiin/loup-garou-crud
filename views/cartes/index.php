@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Cartes - Loup-Garou</title>
-    <link rel="stylesheet" href="/loup-garou-crud/public/css/header.css"> <!-- Lien vers le fichier CSS du header -->
-    <link rel="stylesheet" href="/loup-garou-crud/public/css/cartes.css"> <!-- Lien vers le fichier CSS des cartes -->
+    <!-- Lien vers le fichier CSS pour styliser le header -->
+    <link rel="stylesheet" href="/loup-garou-crud/public/css/header.css">
+    <!-- Lien vers le fichier CSS pour styliser la liste des cartes -->
+    <link rel="stylesheet" href="/loup-garou-crud/public/css/cartes.css">
 </head>
 <body>
 <header>
     <nav>
+        <!-- Liens de navigation -->
         <a href="/loup-garou-crud/public/index.php">Compositions</a> | 
         <a href="/loup-garou-crud/public/index.php?action=cartes">Cartes</a> |
+        <!-- Afficher les options de connexion/déconnexion selon l'état de la session -->
         <?php if (isset($_SESSION['user_id'])): ?>
             <a href="?action=logout">Déconnexion (<?= htmlspecialchars($_SESSION['pseudo']) ?>)</a>
         <?php else: ?>
@@ -22,16 +26,17 @@
     
 <h1>Liste des Cartes</h1>
 
-<!-- Bouton d'administration visible uniquement pour les administrateurs -->
+<!-- Bouton d'administration pour ajouter une carte, visible uniquement pour les administrateurs -->
 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
     <div class="admin-actions">
         <a href="/loup-garou-crud/public/index.php?action=create_carte" class="btn">Ajouter une carte</a>
     </div>
 <?php endif; ?>
 
-<!-- Conteneur principal des cartes -->
+<!-- Conteneur principal pour afficher les cartes -->
 <div class="cards-container">
-    <!-- Section des cartes villageoises -->
+
+    <!-- Section pour les cartes "Villageois" -->
     <div class="cards-column">
         <h2>Villageois</h2>
         <div class="cards-list">
@@ -40,7 +45,7 @@
                     <div class="card" data-nom="<?= htmlspecialchars($carte['nom']); ?>" data-description="<?= htmlspecialchars($carte['description']); ?>">
                         <img src="<?= htmlspecialchars($carte['photo']) ?>" alt="<?= htmlspecialchars($carte['nom']) ?>" class="card-image">
                         <div class="card-name"><?= htmlspecialchars($carte['nom']); ?></div>
-                        <!-- Boutons admin visibles pour les administrateurs -->
+                        <!-- Options de modification/suppression visibles uniquement pour les administrateurs -->
                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                             <div class="admin-card-actions">
                                 <a href="/loup-garou-crud/public/index.php?action=edit_carte&id=<?= $carte['id']; ?>" class="btn btn-edit">Modifier</a>
@@ -53,7 +58,7 @@
         </div>
     </div>
 
-    <!-- Section des cartes neutres -->
+    <!-- Section pour les cartes "Neutre" -->
     <div class="cards-column">
         <h2>Neutre</h2>
         <div class="cards-list">
@@ -62,7 +67,7 @@
                     <div class="card" data-nom="<?= htmlspecialchars($carte['nom']); ?>" data-description="<?= htmlspecialchars($carte['description']); ?>">
                         <img src="<?= htmlspecialchars($carte['photo']) ?>" alt="<?= htmlspecialchars($carte['nom']) ?>" class="card-image">
                         <div class="card-name"><?= htmlspecialchars($carte['nom']); ?></div>
-                        <!-- Boutons admin visibles pour les administrateurs -->
+                        <!-- Options de modification/suppression visibles uniquement pour les administrateurs -->
                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                             <div class="admin-card-actions">
                                 <a href="/loup-garou-crud/public/index.php?action=edit_carte&id=<?= $carte['id']; ?>" class="btn btn-edit">Modifier</a>
@@ -75,7 +80,7 @@
         </div>
     </div>
 
-    <!-- Section des cartes loups-garous -->
+    <!-- Section pour les cartes "Loups-Garous" -->
     <div class="cards-column">
         <h2>Loups-Garous</h2>
         <div class="cards-list">
@@ -84,7 +89,7 @@
                     <div class="card" data-nom="<?= htmlspecialchars($carte['nom']); ?>" data-description="<?= htmlspecialchars($carte['description']); ?>">
                         <img src="<?= htmlspecialchars($carte['photo']) ?>" alt="<?= htmlspecialchars($carte['nom']) ?>" class="card-image">
                         <div class="card-name"><?= htmlspecialchars($carte['nom']); ?></div>
-                        <!-- Boutons admin visibles pour les administrateurs -->
+                        <!-- Options de modification/suppression visibles uniquement pour les administrateurs -->
                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                             <div class="admin-card-actions">
                                 <a href="/loup-garou-crud/public/index.php?action=edit_carte&id=<?= $carte['id']; ?>" class="btn btn-edit">Modifier</a>
@@ -98,15 +103,16 @@
     </div>
 </div>
 
-<!-- Description de la carte agrandie -->
+<!-- Section pour afficher la description agrandie d'une carte -->
 <div id="description-display" style="display: none;">
     <h3 id="card-name"></h3>
     <p id="card-description"></p>
 </div>
 
-<!-- Bouton pour fermer la vue agrandie -->
+<!-- Bouton pour fermer la description agrandie -->
 <div id="close-button" style="display: none;">✖</div>
 
-<script src="/loup-garou-crud/public/js/cartes.js"></script> <!-- Fichier JS pour interactivité -->
+<!-- Fichier JS pour gérer l'interactivité sur les cartes -->
+<script src="/loup-garou-crud/public/js/cartes.js"></script>
 </body>
 </html>

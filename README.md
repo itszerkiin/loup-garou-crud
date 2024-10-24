@@ -1,65 +1,113 @@
+Loup-Garou CRUD
+Description
+Ce projet est une application web permettant de gérer un ensemble de compositions et cartes pour le jeu de société Loup-Garou. Les utilisateurs peuvent créer des comptes, se connecter, et interagir avec les cartes et compositions de différents rôles. Le projet inclut les fonctionnalités suivantes :
 
-# Loup-Garou CRUD Application
+Inscription et connexion d'utilisateurs
+Gestion des cartes de rôles (Villageois, Loups-Garous, Neutres)
+Création, modification, suppression et affichage de compositions
+Like des compositions
+Filtres pour rechercher des compositions par cartes ou par nombre de joueurs
+Upload d'images pour les cartes
+Tests unitaires pour les principales fonctionnalités
+Fonctionnalités principales
+Utilisateurs
+Inscription : Les utilisateurs peuvent créer un compte en fournissant un pseudo, un email et un mot de passe.
+Connexion : Une fois inscrits, les utilisateurs peuvent se connecter avec leur pseudo ou email, et leur mot de passe.
+Rôles d’utilisateur : Chaque utilisateur a un rôle (par défaut "user", avec possibilité d'avoir un rôle "admin").
+Cartes
+Affichage des cartes : Liste des cartes disponibles, divisées en trois catégories (Villageois, Loups-Garous, Neutres).
+Création de cartes (admin uniquement) : Les administrateurs peuvent ajouter de nouvelles cartes avec un nom, une description, une photo, et une catégorie.
+Modification/Suppression de cartes (admin uniquement) : Les administrateurs peuvent modifier ou supprimer des cartes existantes.
+Upload de photo : Lors de la création d'une carte, une image peut être téléchargée et stockée dans le dossier uploads.
+Compositions
+Création de compositions : Les utilisateurs peuvent créer des compositions en sélectionnant des cartes parmi celles disponibles. Chaque composition a un nom, une description et un nombre de joueurs.
+Modification/Suppression de compositions : Les utilisateurs peuvent modifier ou supprimer leurs propres compositions, tandis que les administrateurs peuvent modifier ou supprimer toutes les compositions.
+Likes : Les utilisateurs peuvent aimer des compositions.
+Filtrage des compositions : Les utilisateurs peuvent filtrer les compositions par cartes spécifiques ou par nombre de joueurs.
+Tests unitaires
+Le dossier tests/ contient des tests unitaires pour vérifier le bon fonctionnement des principales fonctionnalités (modèles comme Composition et Utilisateur).
+Ces tests sont exécutables avec PHPUnit.
+Installation
+Prérequis
+PHP (version 7.0 ou supérieure)
+MySQL ou tout autre base de données compatible avec PDO
+Composer 
+PHPUnit pour exécuter les tests (si vous souhaitez les exécuter)
+Étapes d'installation
+Clonez le dépôt :
 
-## Description
-This is a CRUD application for managing "Loup-Garou" game entities such as cards, compositions, and user accounts. The application provides an admin dashboard for managing these entities.
+git clone https://github.com/itszerkiin/loup-garou-crud
+Installez les dépendances avec Composer :
+composer install
+Configuration de la base de données :
 
-## Prerequisites
-- WAMP (Windows Apache MySQL PHP) server
-- Composer (for managing PHP dependencies)
+Créez une base de données MySQL.
+Importez le fichier SQL (create_tables.sql) situé dans le dossier config/ pour créer les tables nécessaires.
+Modifiez le fichier de configuration de la base de données dans /config/database.php avec vos informations de connexion MySQL.
+Dossier d'uploads :
 
-## Installation
+Exécution des tests (facultatif) :
 
-1. Clone the repository or download the project files.
-2. Move the project folder to your WAMP `www` directory (e.g., `C:/wamp64/www/loup-garou-crud`).
-3. Open a terminal in the project folder and run the following command to install dependencies:
+Installez PHPUnit si vous ne l'avez pas déjà :
+bash
+Copier le code
+composer require --dev phpunit/phpunit
+Exécutez les tests dans le dossier tests/ :
+bash
+Copier le code
+./vendor/bin/phpunit tests
+Accédez à l'application :
 
-    ```bash
-    composer install
-    ```
+Lancez votre serveur local PHP .
+Ouvrez votre navigateur et accédez à l'application via http://localhost/loup-garou-crud/public/index.php.
+Arborescence du projet
+loup-garou-crud/
+├── config/
+│   ├── create_tables.sql     # Script SQL pour créer les tables de la base de données
+│   └── database.php          # Configuration de la base de données
+├── controllers/
+│   ├── cartesController.php  # Contrôleur pour gérer les cartes
+│   ├── compositionsController.php # Contrôleur pour gérer les compositions
+│   └── utilisateursController.php # Contrôleur pour la gestion des utilisateurs (inscription, connexion, etc.)
+├── docs/                     # Documentation du projet 
+├── models/
+│   ├── Carte.php             # Modèle pour les cartes
+│   ├── Composition.php       # Modèle pour les compositions
+│   └── Utilisateur.php       # Modèle pour les utilisateurs
+├── public/
+│   ├── index.php             # Point d'entrée principal de l'application
+│   ├── css/                  # Dossier contenant les fichiers CSS pour le style
+│   └── js/                   # Dossier contenant les fichiers JavaScript
+├── tests/
+│   ├── CompositionTest.php    # Tests unitaires pour le modèle Composition
+│   └── UtilisateurTest.php    # Tests unitaires pour le modèle Utilisateur
+├── uploads/                  # Dossier pour stocker les images téléchargées
+├── vendor/                   # Dépendances installées par Composer
+├── views/
+│   ├── cartes/               # Vues pour afficher, créer, modifier des cartes
+│   ├── compositions/         # Vues pour afficher, créer, modifier des compositions
+│   └── utilisateurs/         # Vues pour la connexion et l'inscription des utilisateurs
+├── composer.json             # Fichier pour la gestion des dépendances avec Composer
+├── composer.lock             # Verrouillage des versions des dépendances
+└── README.md                 # Ce fichier
+Utilisation
+Créer un utilisateur
+Allez sur la page d'inscription via le lien Créer un compte.
+Remplissez le formulaire avec un pseudo, une adresse email et un mot de passe.
+Connexion
+Connectez-vous avec votre pseudo ou email et votre mot de passe.
+Une fois connecté, vous pouvez créer et interagir avec les compositions.
+Gestion des cartes (admin)
+En tant qu'administrateur, vous pouvez accéder à la section Cartes pour ajouter de nouvelles cartes.
+Vous pouvez également modifier ou supprimer des cartes existantes.
+Création et gestion des compositions
+Accédez à la page Compositions.
+Créez une nouvelle composition en choisissant un nom, une description, un nombre de joueurs et en sélectionnant des cartes.
+Vous pouvez également modifier vos compositions existantes ou les aimer.
+Tests
+Les tests unitaires sont situés dans le dossier tests/ et couvrent les principaux modèles (Composition et Utilisateur).
+Exécutez les tests avec PHPUnit en suivant les instructions d'installation dans la section "Installation".
 
-4. Create a database using `phpMyAdmin` and configure the database connection in the `.env` file or the configuration file (update `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD`).
 
-## Configuration
-
-1. Create a new database in `phpMyAdmin` and update the database settings in the project configuration file:
-
-    ```
-    DB_CONNECTION=mysql
-    DB_HOST=127.0.0.1
-    DB_PORT=3306
-    DB_DATABASE=loup_garou_db
-    DB_USERNAME=root
-    DB_PASSWORD=
-    ```
-
-2. Ensure WAMP is running and both Apache and MySQL services are active.
-
-## Usage
-
-1. Access the project in your browser using the following URL:
-
-    ```
-    http://localhost/loup-garou-crud
-    ```
-
-2. You will find the following sections:
-
-    - **Admin Dashboard**: Accessible via `views/admin/dashboard.php` for managing the overall application.
-    - **Cards Management**: Create, edit, and list game cards in `views/cartes`.
-    - **Compositions Management**: Manage different compositions of cards in `views/compositions`.
-    - **User Login & Registration**: Users can log in or register in `views/utilisateurs/login.php` and `register.php`.
-
-## Testing
-
-This project uses PHPUnit for testing. You can run the tests using the following command:
-
-```bash
-./vendor/bin/phpunit
-```
-
-Make sure the tests are properly configured in your environment before running them.
-
-## License
-This project is open-source and available under the [MIT License](LICENSE).
-
+Auteurs
+Pascual Tom
