@@ -1,6 +1,6 @@
 /* Thème sombre global */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;   
     background-color: #2b1d0e; /* Couleur sombre brun/rouge */
     color: #f0e6d6; /* Couleur du texte clair pour contraste */
     margin: 0;
@@ -122,6 +122,7 @@ h1, h2, h3 {
     font-weight: bold;
     pointer-events: none;
     transition: opacity 0.3s ease;
+    font-family:'Franklin Gothic Medium';
 }
 
 /* Affiche le nom de la carte au survol */
@@ -136,6 +137,7 @@ h1, h2, h3 {
 }
 #card-description {
     font-size: 1.2em;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
 }
 
 /* Bouton de fermeture */
