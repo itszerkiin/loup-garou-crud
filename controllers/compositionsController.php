@@ -193,4 +193,31 @@ switch ($action) {
             exit;
         }
         break;
+        case 'show':
+            $composition_id = $_GET['id'] ?? null;
+        
+            if ($composition_id) {
+                // Charger la composition
+                $composition = $compositionModel->findById($composition_id);
+        
+                if (!$composition) {
+                    echo "Erreur : Composition introuvable.";
+                    exit;
+                }
+        
+                // Charger les cartes (avec les quantités)
+                $cartes = $compositionModel->getCartes($composition_id);
+        
+                // Charger les commentaires associés
+                require_once __DIR__ . '/../models/Commentaire.php';
+                $commentaires = Commentaire::findByComposition($composition_id);
+        
+                // Inclure la vue
+                require_once __DIR__ . '/../views/compositions/show.php';
+            } else {
+                echo "Erreur : ID de la composition non spécifié.";
+            }
+            break;
+        
+        
 }

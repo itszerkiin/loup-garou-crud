@@ -41,3 +41,15 @@ CREATE TABLE IF NOT EXISTS likes (
     FOREIGN KEY (composition_id) REFERENCES compositions(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- Table `commentaires`
+CREATE TABLE IF NOT EXISTS commentaires (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    contenu TEXT NOT NULL, 
+    utilisateur_id INT NOT NULL, 
+    composition_id INT NOT NULL, 
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE, 
+    FOREIGN KEY (composition_id) REFERENCES compositions(id) ON DELETE CASCADE 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

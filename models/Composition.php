@@ -275,4 +275,43 @@ class Composition
         $stmt = $this->pdo->query('SELECT * FROM cartes');
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+    public function findById($id) {
+        $stmt = $this->pdo->prepare("SELECT * FROM compositions WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    public function getCartes($composition_id) {
+        // Récupérer les cartes JSON de la composition
+        $stmt = $this->pdo->prepare("SELECT cartes FROM compositions WHERE id = ?");
+        $stmt->execute([$composition_id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result || empty($result['cartes'])) {
+            return []; // Retourner un tableau vide si aucune carte n'est trouvée
+        }
+
+        // Décoder le JSON pour obtenir un tableau [carte_id => quantité]
+        $cartesJSON = json_decode($result['cartes'], true);
+        if (!$cartesJSON) {
+            return []; // Si le JSON est invalide ou vide
+        }
+
+        // Récupérer les cartes correspondant aux IDs du JSON
+        $placeholders = implode(',', array_fill(0, count($cartesJSON), '?'));
+        $stmt = $this->pdo->prepare("SELECT id, nom FROM cartes WHERE id IN ($placeholders)");
+        $stmt->execute(array_keys($cartesJSON));
+        $cartes = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        // Ajouter la quantité à chaque carte
+        foreach ($cartes as $carte) {
+            $carte->quantity = $cartesJSON[$carte->id];
+        }
+
+        return $cartes;
+    }
 }
+    
+

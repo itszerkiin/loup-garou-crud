@@ -39,7 +39,11 @@
         <div class="compositions-container">
             <?php foreach ($topLikedCompositions as $composition): ?>
                 <div class="composition uniform-size">
-                    <h2><?= htmlspecialchars($composition['nom']) ?> (<?= htmlspecialchars($composition['nombre_joueurs']) ?> joueurs)</h2>
+                <h2>
+                        <a href="/loup-garou-crud/public/index.php?action=show&id=<?= htmlspecialchars($composition['id']) ?>">
+                            <?= htmlspecialchars($composition['nom']) ?> (<?= htmlspecialchars($composition['nombre_joueurs']) ?> joueurs)
+                        </a>
+                    </h2>
                     <p><?= htmlspecialchars($composition['description']) ?></p>
                     <p><strong>Posté par :</strong> <?= htmlspecialchars($composition['utilisateur']) ?></p>
                     <p>J'aime : <?= isset($composition['likes']) ? htmlspecialchars($composition['likes']) : 0 ?></p>
@@ -136,7 +140,11 @@
         <div class="compositions-container">
             <?php foreach ($compositionsAlphabetical as $composition): ?>
                 <div class="composition uniform-size" data-player-count="<?= htmlspecialchars($composition['nombre_joueurs']) ?>">
-                    <h2><?= htmlspecialchars($composition['nom']) ?> (<?= htmlspecialchars($composition['nombre_joueurs']) ?> joueurs)</h2>
+                <h2>
+                        <a href="/loup-garou-crud/public/index.php?action=show&id=<?= htmlspecialchars($composition['id']) ?>">
+                            <?= htmlspecialchars($composition['nom']) ?> (<?= htmlspecialchars($composition['nombre_joueurs']) ?> joueurs)
+                        </a>
+                    </h2>
                     <p><?= htmlspecialchars($composition['description']) ?></p>
                     <p><strong>Posté par :</strong> <?= htmlspecialchars($composition['utilisateur']) ?></p>
                     <p>J'aime : <?= isset($composition['likes']) ? htmlspecialchars($composition['likes']) : 0 ?></p>
